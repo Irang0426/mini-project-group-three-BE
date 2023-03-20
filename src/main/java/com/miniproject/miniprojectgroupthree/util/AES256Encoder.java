@@ -22,6 +22,12 @@ public class AES256Encoder {
     private final String key = "12345678910111213";
     private final String iv = key.substring(0, 16); // 16byte
 
+    /**
+     * Encode 문자열.
+     *
+     * @param text the text
+     * @return the string
+     */
     public String encodeString(String text) {
         try {
             Cipher cipher = Cipher.getInstance(alg);
@@ -37,6 +43,12 @@ public class AES256Encoder {
         }
     }
 
+    /**
+     * Decode 문자열.
+     *
+     * @param cipherText the cipher text
+     * @return the string
+     */
     public String decodeString(String cipherText) {
         try {
             Cipher cipher = Cipher.getInstance(alg);
@@ -54,6 +66,13 @@ public class AES256Encoder {
     }
 
 
+    /**
+     * Encode Member객체.
+     * {account, name, phoneNumber, birth} 암호화
+     *
+     * @param member the member
+     * @return the member
+     */
     public Member encodeMember(Member member) {
 
         try {
@@ -74,6 +93,14 @@ public class AES256Encoder {
         }
     }
 
+
+    /**
+     * Decode Member객체.
+     * {account, name, phoneNumber, birth} 복호화
+     *
+     * @param member the member
+     * @return the member
+     */
     public Member decodeMember(Member member) {
         try {
             Cipher cipher = Cipher.getInstance(alg);

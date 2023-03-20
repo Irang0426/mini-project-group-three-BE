@@ -21,7 +21,7 @@ public class Member implements UserDetails{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String account;
     @Column(nullable = false)
     private String password;

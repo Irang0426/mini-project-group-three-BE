@@ -9,6 +9,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
+    /**
+     * springDoc의 스웨거를 위한 OpenAPI 설정
+     * 필요시 WebMvcConfiguration으로 이동 가능
+     *
+     * @return the open api
+     */
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()

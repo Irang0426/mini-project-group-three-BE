@@ -23,6 +23,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         return new MappingJackson2JsonView();
     }
 
+    /**
+     * validation 메세지 위치
+     *
+     * @return the message source
+     */
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
@@ -32,6 +37,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         return source;
     }
 
+    /**
+     * Validator 빈 등록
+     * 
+     * @return
+     */
     @Bean
     @Override
     public Validator getValidator() {
@@ -40,6 +50,16 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         return factory;
     }
 
+//    /**
+//     * cors 설정 (아직 미구현)
+//     *
+//     * @param registry
+//     */
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://localhost:8080");
+//    }
 
 
 }
