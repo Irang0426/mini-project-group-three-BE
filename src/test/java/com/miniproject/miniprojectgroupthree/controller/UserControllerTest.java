@@ -1,10 +1,11 @@
 package com.miniproject.miniprojectgroupthree.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.miniproject.miniprojectgroupthree.controller.request.UserJoinRequest;
 import com.miniproject.miniprojectgroupthree.controller.request.UserLoginRequest;
-import com.miniproject.miniprojectgroupthree.domain.User;
+import com.miniproject.miniprojectgroupthree.domain.dto.User;
+import com.miniproject.miniprojectgroupthree.domain.entity.UserEntity;
 import com.miniproject.miniprojectgroupthree.exception.AppException;
+import com.miniproject.miniprojectgroupthree.exception.ErrorCode;
 import com.miniproject.miniprojectgroupthree.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(
-                                new UserJoinRequest(userName,password))
+                                UserEntity.of(userName,password))
                         ))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -59,12 +60,12 @@ public class UserControllerTest {
         String password = "password";
 
         when(userService.join(userName, password))
-                .thenThrow(new AppException());
+                .thenThrow(new AppException(ErrorCode.DUPLICATED_USER_NAME,""));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(
-                                new UserJoinRequest(userName,password))
+                                UserEntity.of(userName,password))
 
                         ))
                 .andDo(print())
@@ -96,7 +97,7 @@ public class UserControllerTest {
         String password = "password";
 
         when(userService.login(userName,password))
-                .thenThrow(new AppException());
+                .thenThrow(new AppException(ErrorCode.USER_NOT_FOUND,""));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,9 +113,10 @@ public class UserControllerTest {
     public void login_fail2() throws Exception {
         String userName = "username";
         String password = "password";
+        String wrongPassword = "password1";
 
         when(userService.login(userName,password))
-                .thenThrow(new AppException());
+                .thenThrow(new AppException(ErrorCode.INVALID_PASSWORD,""));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
