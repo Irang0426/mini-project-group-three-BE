@@ -18,11 +18,13 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", unique = true)
+    @Column(name = "user_name", unique = true, nullable = false)
     private String userName;
+//    @Column(nullable = false)
     private String password;
-
+//    @Column(nullable = false)
     private String name;
+//    @Column(nullable = false)
     private String birthday;
     private String phoneNumber;
     @Enumerated(EnumType.STRING)

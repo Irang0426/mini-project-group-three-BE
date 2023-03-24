@@ -5,7 +5,9 @@ import com.miniproject.miniprojectgroupthree.domain.entity.UserEntity;
 import com.miniproject.miniprojectgroupthree.exception.AppException;
 import com.miniproject.miniprojectgroupthree.exception.ErrorCode;
 import com.miniproject.miniprojectgroupthree.repository.UserEntityRepository;
+import com.miniproject.miniprojectgroupthree.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,11 @@ public class UserService {
 
     private final UserEntityRepository repository;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @Value("${jwt.token.secret-key}")
+    private String secretKey;
+    @Value("${jwt.token.expired-time-ms}")
+    private Long expiredTimeMs;
 
     @Transactional
     public User join(String userName, String password) {
@@ -34,13 +41,15 @@ public class UserService {
         //가입 되었는지
         UserEntity userEntity = repository.findByUserName(userName)
                 .orElseThrow(() -> {
-                    throw new AppException(ErrorCode.USER_NOT_FOUND, null);
+                    throw new AppException(ErrorCode.USER_NOT_FOUND, String.format("%s is not founded", userName));
                 });
         //비밀번호 맞는지
-        if (!passwordEncoder.matches(password,passwordEncoder.encode(userEntity.getPassword()))) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD, null);
+        if (!passwordEncoder.matches(password,userEntity.getPassword()))
+        {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
         //토큰 생성
-        return "";
+
+        return JwtTokenUtils.generalToken(userName, secretKey, expiredTimeMs);
     }
 }

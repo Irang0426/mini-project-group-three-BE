@@ -1,9 +1,7 @@
 package com.miniproject.miniprojectgroupthree.controller.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public class UserJoinRequest {
     private String userName;
