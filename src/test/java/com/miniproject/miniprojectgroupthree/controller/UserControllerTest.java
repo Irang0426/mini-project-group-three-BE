@@ -118,7 +118,7 @@ public class UserControllerTest {
         when(userService.login(userName,password))
                 .thenThrow(new AppException(ErrorCode.INVALID_PASSWORD,""));
 
-        mockMvc.perform(post("/api/v1/users/join")
+        mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(
                                 new UserLoginRequest(userName,password))
