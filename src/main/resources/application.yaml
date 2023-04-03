@@ -1,0 +1,38 @@
+spring:
+  # h2 DB ??
+  # ?? : http://localhost:8080/h2console
+  # Driver Class : org.h2.Driver
+  # JDBC URL : jdbc:h2:mem:mydb
+  # User Name : sa
+  # Password : password
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      path: /h2console
+      enabled: true
+
+
+# springDoc ??
+# ?? : localhost:8080/demo-ui.html
+springdoc:
+  packages-to-scan: com.miniproject.miniprojectgroupthree
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: demo-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
+
