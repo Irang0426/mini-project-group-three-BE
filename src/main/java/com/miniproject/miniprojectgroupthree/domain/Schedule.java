@@ -1,6 +1,7 @@
 package com.miniproject.miniprojectgroupthree.domain;
 
 import com.miniproject.miniprojectgroupthree.constant.ScheduleType;
+import com.miniproject.miniprojectgroupthree.domain.dto.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,8 @@ public class Schedule{
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Setter
-//    private User user;
+    @Setter
+    private User user;
 
     @Setter
     private ScheduleType scheduleType;
