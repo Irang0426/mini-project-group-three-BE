@@ -1,5 +1,6 @@
 package com.miniproject.miniprojectgroupthree.domain;
 
+import com.miniproject.miniprojectgroupthree.constant.ScheduleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,15 +17,14 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Schedule extends BaseWriterEntity{
+public class Schedule{
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
-    private User user;
+//    @Setter
+//    private User user;
 
     @Setter
     private ScheduleType scheduleType;
@@ -35,8 +35,14 @@ public class Schedule extends BaseWriterEntity{
     @Setter
     private LocalDate endDate;
 
-    public static Schedule of(User user, ScheduleType scheduleType, LocalDate startDate, LocalDate endDate) {
-        return new Schedule(user, scheduleType, startDate, endDate);
+    public Schedule(ScheduleType scheduleType, LocalDate startDate, LocalDate endDate) {
+        this.scheduleType = scheduleType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public static Schedule of(ScheduleType scheduleType, LocalDate startDate, LocalDate endDate) {
+        return new Schedule(scheduleType, startDate, endDate);
     }
 
     @Override
