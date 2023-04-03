@@ -30,10 +30,7 @@ public class AES256Encoder {
      */
     public String encodeString(String text) {
         try {
-            Cipher cipher = Cipher.getInstance(alg);
-            SecretKeySpec keySpec = new SecretKeySpec(iv.getBytes(), "AES");
-            IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
+            Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
 
             byte[] encrypted = cipher.doFinal(text.getBytes(UTF_8));
             return Base64.getEncoder().encodeToString(encrypted);
@@ -51,10 +48,7 @@ public class AES256Encoder {
      */
     public String decodeString(String cipherText) {
         try {
-            Cipher cipher = Cipher.getInstance(alg);
-            SecretKeySpec keySpec = new SecretKeySpec(iv.getBytes(), "AES");
-            IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
+            Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
 
             byte[] decodedBytes = Base64.getDecoder().decode(cipherText);
             byte[] decrypted = cipher.doFinal(decodedBytes);
@@ -76,10 +70,7 @@ public class AES256Encoder {
     public Member encodeMember(Member member) {
 
         try {
-            Cipher cipher = Cipher.getInstance(alg);
-            SecretKeySpec keySpec = new SecretKeySpec(iv.getBytes(), "AES");
-            IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
+            Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
 
             member.setAccount(Base64.getEncoder().encodeToString(cipher.doFinal(member.getAccount().getBytes(UTF_8))));
             member.setName(Base64.getEncoder().encodeToString(cipher.doFinal(member.getName().getBytes(UTF_8))));
@@ -103,10 +94,7 @@ public class AES256Encoder {
      */
     public Member decodeMember(Member member) {
         try {
-            Cipher cipher = Cipher.getInstance(alg);
-            SecretKeySpec keySpec = new SecretKeySpec(iv.getBytes(), "AES");
-            IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
+            Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
 
             member.setAccount(new String(cipher.doFinal(Base64.getDecoder().decode(member.getAccount())), UTF_8));
             member.setName(new String(cipher.doFinal(Base64.getDecoder().decode(member.getName())), UTF_8));
@@ -116,9 +104,16 @@ public class AES256Encoder {
             return member;
 
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
-                 InvalidAlgorithmParameterException | IllegalBlockSizeException |
-                 BadPaddingException e) {
+                 InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
             throw new AES256EncodingException(e);
         }
+    }
+
+    private Cipher getCipher(int mode) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        Cipher cipher = Cipher.getInstance(alg);
+        SecretKeySpec keySpec = new SecretKeySpec(iv.getBytes(), "AES");
+        IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
+        cipher.init(mode, keySpec, ivParamSpec);
+        return cipher;
     }
 }

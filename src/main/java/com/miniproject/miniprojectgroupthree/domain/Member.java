@@ -32,7 +32,7 @@ public class Member implements UserDetails{
     @Column(nullable = false)
     private String birth;
     @Column(nullable = false)
-    private String authority;
+    private Role role;
 
     private LocalDateTime loginDate;
     private LocalDateTime modifyDate;
@@ -45,13 +45,9 @@ public class Member implements UserDetails{
     }
 
 
-    public Boolean isAdmin() {
-        return authority.equals("ROLE_ADMIN");
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton((GrantedAuthority) () -> authority);
+        return Collections.singleton((GrantedAuthority) () -> role.name());
     }
 
     @Override
