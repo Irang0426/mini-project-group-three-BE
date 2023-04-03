@@ -52,4 +52,10 @@ public class UserService {
 
         return JwtTokenUtils.generalToken(userName, secretKey, expiredTimeMs);
     }
+
+    public User loadUserByUsername(String userName) {
+        return repository.findByUserName(userName).map(User::fromEntity).orElseThrow(() -> {
+            throw new AppException(ErrorCode.USER_NOT_FOUND, String.format("%s is not founded", userName));
+        });
+    }
 }
